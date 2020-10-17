@@ -1,11 +1,5 @@
 <script>
-	export let name;
+import Stub from './components/stub.svelte';
 </script>
 
-<style>
-	.demo {
-		color: blue;
-	}
-</style>
-
-<h1 class="demo">Hello {name}!</h1>
+<Stub/>
