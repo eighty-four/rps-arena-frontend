@@ -1,4 +1,4 @@
 /**
  * @type string
  */
-export const lastName = "Dikarev";
+export const lastName = 'Dikarev';

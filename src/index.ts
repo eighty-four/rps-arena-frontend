@@ -1,6 +1,14 @@
-import { lastName } from './const';
+import { person } from './profile';
+import App from './App.svelte';
 
 const
 	name = 'Andrey';
 
-console.log(`Hello from webpack, ${name + 1} ${lastName}`);
+new App({
+	target: document.body,
+	props: {
+		name: person.name,
+	},
+});
+
+console.log(`Hello from webpack, ${name} ${person.age}`);
