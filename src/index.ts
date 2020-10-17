@@ -1,14 +1,4 @@
-import { person } from './profile';
+import './assets/reset.css';
 import App from './App.svelte';
 
-const
-	name = 'Andrey';
-
-new App({
-	target: document.body,
-	props: {
-		name: person.name,
-	},
-});
-
-console.log(`Hello from webpack, ${name} ${person.age}`);
+new App({target: document.body});
