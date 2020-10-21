@@ -4,7 +4,9 @@
     "description": "Client side of RPS Arena game",
     "private": true,
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "dev": "webpack --config webpack.dev.js --watch",
+        "test:eslint": "eslint .",
+        "build:prod": "webpack --config webpack.prod.js"
     },
     "repository": {
         "type": "git",
@@ -44,6 +46,7 @@
         "ts-loader": "^8.0.4",
         "typescript": "^4.0.3",
         "webpack": "^4.44.2",
-        "webpack-cli": "^3.3.12"
+        "webpack-cli": "^3.3.12",
+        "webpack-merge": "^5.2.0"
     }
 }
