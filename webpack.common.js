@@ -1,13 +1,11 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
 
 const babelLoader = {
   loader: 'babel-loader',
   options: {
-    presets: ["@babel/preset-env"]
+    presets: ['@babel/preset-env'],
   }
 };
 
@@ -16,7 +14,7 @@ module.exports = {
 
 	plugins: [
 		new MiniCssExtractPlugin(),
-		new HtmlWebpackPlugin({title: 'RPS Arena', minify: true}),
+		new HtmlWebpackPlugin({title: 'RPS Arena'}),
 	],
 
 	module: {
@@ -78,15 +76,5 @@ module.exports = {
 	output: {
 		filename: 'index.js',
 		path: path.resolve(__dirname, 'dist'),
-	},
-
-	mode: 'development',
-
-	optimization: {
-		minimize: true,
-		minimizer: [
-			new TerserPlugin(),
-			new CssMinimizerPlugin(),
-		]
 	},
 };
