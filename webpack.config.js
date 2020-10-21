@@ -1,35 +1,55 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+
+const babelLoader = {
+  loader: 'babel-loader',
+  options: {
+    presets: ["@babel/preset-env"]
+  }
+};
 
 module.exports = {
 	entry: path.resolve(__dirname, 'src', 'index.ts'),
 
 	plugins: [
 		new MiniCssExtractPlugin(),
-		new HtmlWebpackPlugin({title: 'RPS Arena'}),
+		new HtmlWebpackPlugin({title: 'RPS Arena', minify: true}),
 	],
 
 	module: {
 		rules: [
 			{
+				test: /\.js$/,
+				exclude: /node_modules/,
+				use: babelLoader,
+			},
+
+			{
 				test: /\.ts$/,
-				use: 'ts-loader',
+				use: [babelLoader, 'ts-loader'],
 				exclude: /node_modules/,
 			},
 
 			{
 				test: /\.svelte$/,
-				use: {
-					loader: 'svelte-loader',
-					options: {
-						emitCss: true,
-					}
-				}
+				use: [
+					babelLoader,
+
+					{
+						loader: 'svelte-loader',
+						options: {
+							emitCss: true,
+						}
+					},
+				]
 			},
 
 			{
 				test: /\.css$/,
+				exclude: /node_modules/,
 				use: [
 					MiniCssExtractPlugin.loader,
 					'css-loader',
@@ -61,4 +81,12 @@ module.exports = {
 	},
 
 	mode: 'development',
+
+	optimization: {
+		minimize: true,
+		minimizer: [
+			new TerserPlugin(),
+			new CssMinimizerPlugin(),
+		]
+	},
 };
