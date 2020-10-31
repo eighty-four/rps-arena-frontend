@@ -12,6 +12,7 @@
 
 	.title {
 		font-size: 3em;
+		color: red;
 	}
 
 	.team {
