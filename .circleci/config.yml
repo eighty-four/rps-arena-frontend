@@ -46,11 +46,42 @@ jobs:
           name: Buid Application
           command: npm run build:prod
 
+      - persist_to_workspace:
+          root: .
+          paths:
+            - dist/
+
+  deploy:
+    machine:
+      enabled: true
+
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "f2:08:46:6e:62:14:29:6d:7c:8b:e5:f1:e2:52:00:fb"
+
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: Deploy Over SSH
+          command: scp -r ./dist/* $SSH_USER@$SSH_HOST:$SSH_SERVE_PATH
+
 workflows:
   version: 2
-  lint_and_build:
+  lint_build_deploy:
     jobs:
       - lint
+
       - build:
           requires:
             - lint
+
+      - deploy:
+          requires:
+            - lint
+            - build
+
+          filters:
+            branches:
+              only: master
