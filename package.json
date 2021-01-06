@@ -4,6 +4,7 @@
     "description": "Client side of RPS Arena game",
     "private": true,
     "scripts": {
+        "start": "node server",
         "dev": "webpack --config webpack.dev.js --watch",
         "test:eslint": "eslint .",
         "build:prod": "webpack --config webpack.prod.js"
@@ -36,6 +37,7 @@
         "css-minimizer-webpack-plugin": "^1.1.5",
         "eslint": "^7.17.0",
         "eslint-plugin-svelte3": "^2.7.3",
+        "express": "^4.17.1",
         "html-webpack-plugin": "^4.5.1",
         "mini-css-extract-plugin": "^1.3.3",
         "postcss": "^8.2.2",
