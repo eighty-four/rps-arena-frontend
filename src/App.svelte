@@ -1,5 +1,10 @@
 <script>
-import Stub from './components/stub.svelte';
+	import Router, { activePageStore } from './core/router';
+
+	const
+		router = new Router();
+
+	router.init();
 </script>
 
-<Stub/>
+<svelte:component this={$activePageStore.component} params={$activePageStore.params}/>
