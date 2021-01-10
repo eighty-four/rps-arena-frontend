@@ -1,8 +1,9 @@
 import type { SvelteComponent } from 'svelte';
 
-// TODO: этот интерфейс - описание страницы. Активная страница = этот же объект
-// Что тогда делать с параметрами? (активная страница расширяет интерфейс обычного описания страницы и добавляет параметры)
-export interface ActivePage {
+/**
+ * Description of a route
+ */
+export interface RouteInfo {
 	/**
 	 * Component that represents the page
 	 */
@@ -16,8 +17,13 @@ export interface ActivePage {
 	/**
 	 * Title of the page displayed in browser interface
 	 */
-	title?: string;
+	title: string;
+}
 
+/**
+ * Description of the current active route
+ */
+export interface ActiveRouteInfo extends RouteInfo {
 	/**
 	 * Parameters (props) being passed to the page component
 	 */

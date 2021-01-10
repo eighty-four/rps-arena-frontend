@@ -1,73 +1,116 @@
-import IndexPage from '../../pages/index.svelte';
-import UserPage from '../../pages/user.svelte';
+import routes, { defaultRoute } from './routes';
+import { activeRouteStore } from './store';
+import type { ActiveRouteInfo } from './interface';
 
-import { activePageStore } from './store';
-import type { ActivePage } from './interface';
-
+export * from './routes';
 export * from './store';
 export * from './interface';
 
 export default class Router {
-	protected activePageStore: ActivePage | undefined;
+	protected static _instance: Router;
 
-	protected set activePage(value: ActivePage) {
-		activePageStore.set(value);
+	/**
+	 * Internal field for storing the current active route
+	 */
+	protected activeRouteStore: ActiveRouteInfo | undefined;
+
+	/**
+	 * @see activeRouteStore
+	 */
+	protected set activeRoute(value: ActiveRouteInfo | undefined) {
+		if (value?.title != null) {
+			this.setTitle(value.title);
+		}
+
+		activeRouteStore.set(value);
 	}
 
-	protected get activePage(): ActivePage | undefined {
-		return this.activePageStore;
+	/**
+	 * @see activeRouteStore
+	 */
+	protected get activeRoute(): ActiveRouteInfo | undefined {
+		return this.activeRouteStore;
 	}
 
 	/**
 	 * Current pathname without trailing slash
 	 */
 	protected get pathname(): string {
-		return globalThis.location.pathname.replace(/\/$/g, '');
+		return globalThis.location.pathname.replace(/(.+)(\/)$/g, '$1');
 	}
 
 	constructor() {
-		activePageStore.subscribe((value) => this.activePageStore = value);
+		if (Router._instance == null) {
+			activeRouteStore.subscribe((value) => this.activeRouteStore = value);
+			Router._instance = this;
+		}
+
+		return Router._instance;
 	}
 
+	/**
+	 * Initializes router.
+	 * Sets first opened page by location and attaches event listeners.
+	 */
 	init(): void {
-		this.go(this.pathname);
+		this.replace(this.pathname);
 
-		document.addEventListener<'click'>('click', (event: MouseEvent) => {
+		globalThis.document.addEventListener<'click'>('click', (event: MouseEvent) => {
 			const
 				target = event.target as HTMLAnchorElement;
 
 			if (target.nodeName === 'A' && target.dataset.routerLink != null) {
 				event.preventDefault();
-				this.go(target.dataset.routerLink);
+				this.push(target.dataset.routerLink);
 			}
 		});
 
 		globalThis.addEventListener<'popstate'>('popstate', (event: PopStateEvent) => {
 			const
-				currentPath = this.pathname;
+				currentPath = this.pathname,
+				newRoute = routes[currentPath] ?? defaultRoute;
 
-			if (currentPath === '/user') {
-				this.activePage = {component: UserPage, path: currentPath, params: undefined};
-
-			} else {
-				this.activePage = {component: IndexPage, path: currentPath, params: undefined};
-			}
+			this.activeRoute = newRoute;
 		});
 	}
 
-	// forward??
-	go(path: string): void {
-		if (this.activePage?.path === path) {
+	/**
+	 * Pushes new entry to the browser history and sets new route in the app
+	 * @param path {string}
+	 */
+	push(path: string): void {
+		const
+			newRoute = routes[path] ?? defaultRoute;
+
+		if (this.activeRoute?.path === newRoute.path) {
 			return;
 		}
 
-		if (path === '/user') {
-			this.activePage = {component: UserPage, path, params: undefined};
-			globalThis.history.pushState(null, null, '/user');
+		this.activeRoute = newRoute;
+		globalThis.history.pushState(null, newRoute.title, newRoute.path);
+	}
 
-		} else {
-			this.activePage = {component: IndexPage, path, params: undefined};
-			globalThis.history.replaceState(null, null, '/index');
+	/**
+	 * Replaces current entry in the browser history and sets corresponding route in the app
+	 * @param path {string}
+	 */
+	replace(path: string): void {
+		const
+			newRoute = routes[path] ?? defaultRoute;
+
+		if (this.activeRoute?.path === newRoute.path) {
+			return;
 		}
+
+		this.activeRoute = newRoute;
+		globalThis.history.replaceState(null, newRoute.title, newRoute.path);
+	}
+
+	/**
+	 * Sets the title of the document
+	 * @param title {string}
+	 */
+	setTitle(title: string): void {
+		globalThis.document.title = title;
 	}
 }
