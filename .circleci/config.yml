@@ -23,6 +23,10 @@ jobs:
           name: Lint code
           command: npm run test:eslint
 
+      - run:
+          name: Check typescript
+          command: npm run test:typescript
+
   build:
     docker:
       - image: cimg/node:14.8.0

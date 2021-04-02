@@ -59,9 +59,9 @@ export default class Router {
 			const
 				target = event.target as HTMLAnchorElement;
 
-			if (target.nodeName === 'A' && target.dataset.routerLink != null) {
+			if (target.nodeName === 'A' && target.dataset['routerLink'] != null) {
 				event.preventDefault();
-				this.push(target.dataset.routerLink);
+				this.push(target.dataset['routerLink']);
 			}
 		});
 
