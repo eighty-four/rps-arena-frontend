@@ -18,4 +18,4 @@ export default routes;
 /**
  * The default route of the app
  */
-export const defaultRoute = routes['/'];
+export const defaultRoute = <RouteInfo>routes['/'];
