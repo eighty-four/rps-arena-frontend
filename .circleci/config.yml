@@ -81,11 +81,11 @@ workflows:
           requires:
             - lint
 
-      - deploy:
-          requires:
-            - lint
-            - build
-
-          filters:
-            branches:
-              only: master
+#      - deploy:
+#          requires:
+#            - lint
+#            - build
+#
+#          filters:
+#            branches:
+#              only: master
