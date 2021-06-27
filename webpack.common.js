@@ -3,10 +3,10 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const babelLoader = {
-  loader: 'babel-loader',
-  options: {
-    presets: ['@babel/preset-env'],
-  }
+	loader: 'babel-loader',
+	options: {
+		presets: ['@babel/preset-env'],
+	}
 };
 
 module.exports = {
