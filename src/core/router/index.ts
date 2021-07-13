@@ -67,8 +67,8 @@ export default class Router {
 
 		globalThis.addEventListener<'popstate'>('popstate', () => {
 			const
-				currentPath = this.pathname,
-				newRoute = routes[currentPath] ?? defaultRoute;
+				newPathname = this.pathname,
+				newRoute = routes[newPathname] ?? defaultRoute;
 
 			this.activeRoute = newRoute;
 		});

@@ -1,13 +1,11 @@
 import type { RouteInfo } from './interface';
 
-import IndexPage from '../../pages/index.svelte';
-
 /**
  * Routes config
  */
 const routes = <Record<string, RouteInfo>> {
 	'/': {
-		component: IndexPage,
+		component: () => import('../../pages/index.svelte').then((module) => module.default),
 		path: '/',
 		title: 'RPS Arena',
 	},

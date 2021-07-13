@@ -7,7 +7,7 @@ export interface RouteInfo {
 	/**
 	 * Component that represents the page
 	 */
-	component: typeof SvelteComponent;
+	component(): Promise<typeof SvelteComponent>;
 
 	/**
 	 * Pathname of the url of the page

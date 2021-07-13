@@ -7,4 +7,6 @@
 	router.init();
 </script>
 
-<svelte:component this={$activeRouteStore?.component} params={$activeRouteStore?.params}/>
+{#await $activeRouteStore.component() then component}
+	<svelte:component this={component} params={$activeRouteStore?.params}/>
+{/await}
